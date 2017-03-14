@@ -25,8 +25,19 @@ object TD7 {
   /**
    * Explications:
    * 
+   * On passe une liste en parametre
+   * Si la liste est vide, on la renvoie
+   * Si la liste ne contient qu'un élément on la renvoie
+   * Si la liste contient plusieurs éléments :
+   * 	Si le second élément est le même que le premier, on l'enlève et on rappelle la fonction
+   * 	Sinon on apelle la fonction sur la suite de la liste
    */
-
+   def rmCons(l:List[_]):List[_] = l match {
+     case Nil => Nil
+     case head::Nil => l
+     case head::tail if head==tail.head => rmCons(head::tail.tail)
+     case head::tail => head::rmCons(tail)
+   }
   
   
   /**
@@ -67,6 +78,15 @@ object TD7 {
    * 
    */
 
+   def encode(l:List[_]):List[_] = {
+     def encode2(l:List[_], n:Int):List[_] = l match {
+       case Nil => Nil
+       case head::Nil => (n,head)::Nil
+       case head::tail if head==tail.head => encode2(head::tail.tail,n+1)
+       case head::tail => (n,head)::encode2(tail,1)
+     }
+     encode2(l,1)
+   }
   
   
   /**
@@ -108,7 +128,23 @@ object TD7 {
   /**
    * Explications:
    * 
+   * On passe une liste et un entier en parametre
+   * Si la liste est vide, on renvoie une liste vide
+   * Si la liste ne contient qu'un élément, on renvoie la liste
+   * Si la liste contient plusieurs éléments :
+   * 	Si il ne reste plus de rotation on renvoie la liste
+   * 	Sinon on rappelle la fonction en faisant une rotation
+   * 
    */
+   def rotate(l :List[_], n :Int):List[_] = l match {
+     case Nil => Nil
+     case head::Nil => l
+     case head::tail => n match {
+       case 0 => l
+       case _ if n>0 => rotate(tail:+head, n-1)
+       case _ if n<0 => rotate(l.last::l.init, n+1)
+     }
+  } 
 
   
   
